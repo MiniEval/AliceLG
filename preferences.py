@@ -147,21 +147,40 @@ class LOOKINGGLASS_PT_preferences(AddonPreferences):
 
 	# logger level
 	logger_level: bpy.props.EnumProperty(
-									items = [('0', 'Debug messages', 'All messages are written to the log file. This is for detailed debugging and extended bug reports.'),
-											 ('1', 'Info, Warnings, and Errors', 'All info, warning, and error messages are written to the log file. This is for standard bug reports.')],
+									items = [('0', 'Debug messages', 'All messages are written to the log file. This is for detailed debugging and extended bug reports'),
+											 ('1', 'Info, Warnings, and Errors', 'All info, warning, and error messages are written to the log file. This is for standard bug reports'),
+											 ('2', 'Only Errors', 'Only error messages are written to the log file. This is for less verbose console outputs')],
 									default='1',
 									name="Logging Mode",
 									update=LookingGlassAddon.update_logger_levels,
 									)
+	console_output: bpy.props.BoolProperty(
+									default=False,
+									name="Log to console",
+									description="Additionally log outputs to std out for debugging",
+									update=LookingGlassAddon.update_console_output,
+									)
+
 	# draw function
 	def draw(self, context):
-
 		layout = self.layout
+# render mode
+row_render_mode = layout.row()
+column_1 = row_render_mode.column()
+column_1.label(text="Render Mode:")
+column_1.scale_x = 0.2
+column_2 = row_render_mode.column()
+column_2.prop(self, "render_mode", text="")
+column_2.scale_x = 0.8
 
-		# render mode
-		row_render_mode = layout.row()
-		row_render_mode.prop(self, "render_mode")
-
-		# logger level
-		row_logger_level = layout.row()
-		row_logger_level.prop(self, "logger_level")
+# logger level
+row_logger = layout.row()
+column_1 = row_logger.column()
+column_1.label(text="Logging Mode:")
+column_1.scale_x = 0.2
+column_2 = row_logger.column()
+column_2.prop(self, "logger_level", text="")
+column_2.scale_x = 0.55
+column_3 = row_logger.column()
+column_3.prop(self, "console_output")
+column_3.scale_x = 0.25

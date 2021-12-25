@@ -61,8 +61,8 @@ LookingGlassAddon.debugging_use_dummy_device = False
 # console output: if set to true, the Alice/LG and pyLightIO logger messages
 # of all levels are printed to the console. If set to falls, only warnings and
 # errors are printed to console.
-LookingGlassAddon.debugging_print_pylio_logger_all = True
-LookingGlassAddon.debugging_print_internal_logger_all = True
+LookingGlassAddon.debugging_print_pylio_logger_all = False
+LookingGlassAddon.debugging_print_internal_logger_all = False
 
 
 
@@ -185,15 +185,11 @@ LookingGlassAddonLogger.info(" [#] Add-on path: %s" % LookingGlassAddon.path)
 if bpy.app.version < bl_info['blender']:
 	raise Exception("This version of Blender is not supported by " + bl_info['name'] + ". Please use v" + '.'.join(str(v) for v in bl_info['blender']) + " or higher.")
 
-# Check Add-on Dependencies
-# +++++++++++++++++++++++++++++++++++++++++++++
-# this to produce log messages
-LookingGlassAddon.check_dependecies(debug=True)
 
 # Load Internal Modules
 # +++++++++++++++++++++++++++++++++++++++++++++
-# if NOT all the dependenceis are satisfied
-if not LookingGlassAddon.check_dependecies():
+# if NOT all the dependenceis are satisfied, debug will produce log messages.
+if not LookingGlassAddon.check_dependecies(debug=LookingGlassAddon.debugging_print_internal_logger_all):
 
 	# reload/import all preferences' related code
 	try:
